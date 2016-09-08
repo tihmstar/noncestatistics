@@ -1,0 +1,1 @@
+clang *.c *.h *.cpp /usr/local/lib/libplist.a /opt/local/lib/libxml2.a /opt/local/lib/liblzma.a /opt/local/lib/libiconv.a /usr/local/lib/libimobiledevice.a /usr/local/lib/libusbmuxd.a /usr/local/lib/libirecovery.a -lz -framework IOKit -lc++ -framework CoreFoundation -lssl /opt/local/lib/libcrypto.a 
