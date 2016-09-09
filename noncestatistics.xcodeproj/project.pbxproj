@@ -13,6 +13,7 @@
 		E97845941D7EFD5B00798C24 /* idevicerestore.c in Sources */ = {isa = PBXBuildFile; fileRef = E978458C1D7EFD5B00798C24 /* idevicerestore.c */; };
 		E97845951D7EFD5B00798C24 /* normal.c in Sources */ = {isa = PBXBuildFile; fileRef = E978458E1D7EFD5B00798C24 /* normal.c */; };
 		E97845961D7EFD5B00798C24 /* recovery.c in Sources */ = {isa = PBXBuildFile; fileRef = E97845911D7EFD5B00798C24 /* recovery.c */; };
+		E98204B21D82FEB90005560C /* stats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E98204B01D82FEB90005560C /* stats.cpp */; };
 		E9AD3FBD1D82D1CA007C843E /* libirecovery.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E9AD3FBC1D82D1CA007C843E /* libirecovery.2.dylib */; };
 		E9AD3FBF1D82D1E6007C843E /* libplist.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E9AD3FBE1D82D1E6007C843E /* libplist.3.dylib */; };
 		E9AD3FC31D82D22B007C843E /* libimobiledevice.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E9AD3FC21D82D22B007C843E /* libimobiledevice.6.dylib */; };
@@ -44,6 +45,8 @@
 		E978458F1D7EFD5B00798C24 /* normal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = normal.h; sourceTree = "<group>"; };
 		E97845901D7EFD5B00798C24 /* recovery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = recovery.h; sourceTree = "<group>"; };
 		E97845911D7EFD5B00798C24 /* recovery.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = recovery.c; sourceTree = "<group>"; };
+		E98204B01D82FEB90005560C /* stats.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stats.cpp; sourceTree = "<group>"; };
+		E98204B11D82FEB90005560C /* stats.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = stats.hpp; sourceTree = "<group>"; };
 		E9AD3FBC1D82D1CA007C843E /* libirecovery.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libirecovery.2.dylib; path = ../../../../../usr/local/lib/libirecovery.2.dylib; sourceTree = "<group>"; };
 		E9AD3FBE1D82D1E6007C843E /* libplist.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libplist.3.dylib; path = ../../../../../usr/local/Cellar/libplist/1.12/lib/libplist.3.dylib; sourceTree = "<group>"; };
 		E9AD3FC21D82D22B007C843E /* libimobiledevice.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libimobiledevice.6.dylib; path = ../../../../../usr/local/lib/libimobiledevice.6.dylib; sourceTree = "<group>"; };
@@ -97,6 +100,8 @@
 				E97845901D7EFD5B00798C24 /* recovery.h */,
 				E97845911D7EFD5B00798C24 /* recovery.c */,
 				E97845801D7EF5F400798C24 /* main.cpp */,
+				E98204B01D82FEB90005560C /* stats.cpp */,
+				E98204B11D82FEB90005560C /* stats.hpp */,
 			);
 			path = noncestatistics;
 			sourceTree = "<group>";
@@ -158,6 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E97845961D7EFD5B00798C24 /* recovery.c in Sources */,
+				E98204B21D82FEB90005560C /* stats.cpp in Sources */,
 				E97845931D7EFD5B00798C24 /* dfu.c in Sources */,
 				E97845951D7EFD5B00798C24 /* normal.c in Sources */,
 				E97845921D7EFD5B00798C24 /* common.c in Sources */,
