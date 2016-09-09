@@ -9,6 +9,7 @@
 #include <signal.h>
 #include <libimobiledevice/libimobiledevice.h>
 #include <libimobiledevice/lockdown.h>
+#include "stats.hpp"
 
 #define USEC_PER_SEC 1000000
 
@@ -16,6 +17,7 @@ static struct option longopts[] = {
     { "ecid",       no_argument,       NULL, 'e' },
     { "times",      no_argument,       NULL, 't'},
     { "abort",      no_argument,       NULL, 'a'},
+    { "statistics",           no_argument,       NULL, 's'},
     { "help",               no_argument,       NULL, 'h' },
     { NULL, 0, NULL, 0 }
 };
@@ -28,8 +30,9 @@ void cmd_help(){
     printf("  -h, --help\t\t\tprints usage information\n");
     printf("  -e, --ecid ECID\t\tmanually specify ECID of the device. Uses any device if not specified\n");
     printf("  -t, --times amount\t\tspeficy how many NONCES are collected. If not specified it will collect nonces until you enter ctrl+c\n");
-    printf("  -a, --abort\t\tresets device to normal mode");
-    printf("  FILE\t\tFile to write statistics to\n");
+    printf("  -a, --abort\t\tresets device to normal mode\n");
+    printf("  -s, --statistics\t\tprint statistics from nonce file\n");
+    printf("  FILE\t\tFile to write nonces to (or read from when using '-s' or '--statistics')\n");
     printf("\n");
 }
 
@@ -86,7 +89,7 @@ int main(int argc, const char * argv[]) {
     int times = 0;
     int optindex = 0;
     int opt = 0;
-    while ((opt = getopt_long(argc, (char* const *)argv, "he:t:a", longopts, &optindex)) > 0) {
+    while ((opt = getopt_long(argc, (char* const *)argv, "he:t:as", longopts, &optindex)) > 0) {
         switch (opt) {
             case 'h': // long option: "help"; can be called as short option
                 cmd_help();
@@ -99,6 +102,15 @@ int main(int argc, const char * argv[]) {
                 break;
             case 'a': // long option: "abort"; can be called as short option
                 only_abort = true;
+                break;
+            case 's': // long option: "statistics"; can be called ad short option
+                if (argc < 2) {
+                    std::cout << "You must specify a filename as last argument!" << std::endl;
+                    cmd_help();
+                    return -1;
+                }
+                cmd_statistics(argv[argc-1]);
+                return 0;
                 break;
             default:
                 cmd_help();
@@ -122,8 +134,10 @@ int main(int argc, const char * argv[]) {
     
     info("Identified device as %s, %s ", client->device->hardware_model, client->device->product_type);
     if (!only_abort) {
-        if (argc<2) {
+        if (argc>=2) {
             std::cout << "You must specify a filename as last argument!" << std::endl;
+            cmd_help();
+            return -1;
         }
         const char *filename = argv[argc-1];
         
