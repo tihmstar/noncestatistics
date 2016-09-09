@@ -10,8 +10,8 @@
 #include <regex>
 #include <fstream>
 
-std::vector<std::pair<std::string, int>> sortNonceList(std::map<std::string, int>& nonceList){
-    std::vector<std::pair<std::string, int>> sortedList;
+std::vector<std::pair<std::string, int> > sortNonceList(std::map<std::string, int>& nonceList){
+    std::vector<std::pair<std::string, int> > sortedList;
     
     for (auto p : nonceList){ sortedList.push_back(p); }
     std::sort(sortedList.begin(), sortedList.end(), [](std::pair<std::string, int> &a, std::pair<std::string, int> &b){
@@ -40,14 +40,13 @@ void cmd_statistics(const char* filename){
     }
     myfile.close();
     
-    std::vector<std::pair<std::string, int>> sortedList = sortNonceList(nonceList);
+    std::vector<std::pair<std::string, int> > sortedList = sortNonceList(nonceList);
     
     std::cout << "nonce                                     abs. frequency    rel. frequency" << std::endl;
     std::cout << "===========================================================================" << std::endl;
     for (auto p: sortedList) {
         if (p.second == 1) continue;
-        printf("%s         %4d             %.4f%%\n",p.first.c_str(),p.second,((float)p.second/amount));
-        //std::cout << p.first << " \t " << p.second << " \t " << (float)p.second/amount << std::endl;
+        printf("%s         %4d             %2.3f%%\n",p.first.c_str(),p.second,100*((float)p.second/amount));
     }
     std::cout << "===========================================================================" << std::endl;
     std::cout << "nonce                                     abs. frequency    rel. frequency" << std::endl<<std::endl;

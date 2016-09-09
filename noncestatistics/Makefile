@@ -1,3 +1,4 @@
+# This Makefile is used for STATIC compilation ONLY!
 CC=clang
 CXX=clang
 CXXFLAGS=-g -std=c++11 -Wall -pedantic
