@@ -23,7 +23,7 @@ static struct option longopts[] = {
 };
 
 void cmd_help(){
-    printf("Usage: noncestatistics [OPTIONS]\n");
+    printf("Usage: noncestatistics [OPTIONS] FILE\n");
     printf("tool to get a lot of nonces from various iOS devices/versions\n\n");
     
 

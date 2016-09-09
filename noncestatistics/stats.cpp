@@ -1,11 +1,4 @@
 #include "stats.hpp"
-
-
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdio.h>
-#include <algorithm>
 #include <iostream>
 #include <regex>
 #include <fstream>

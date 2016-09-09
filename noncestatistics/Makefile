@@ -34,6 +34,13 @@ recovery.o: recovery.c
 stats.o: stats.cpp
 	$(CXX) $(CXXFLAGS) -c stats.cpp 
 
+release: noncestatistics.zip
+
+noncestatistics.zip: noncestatistics
+	zip -9 $(TARGET).zip $(TARGET)
+
 clean:
+	rm $(TARGET).zip
 	rm *.o
 	rm $(TARGET)
+	
