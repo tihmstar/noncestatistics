@@ -167,7 +167,7 @@ int main(int argc, const char * argv[]) {
         
         fp = fopen(filename, "a");
         fprintf(fp, "ECID: %llx\nIdentified device as %s, %s \n", client->ecid, client->device->hardware_model, client->device->product_type);
-        
+        unsigned int noncesCreated = 0;
         int increment = 1;
         if (times==0) {
             times++;
@@ -181,6 +181,7 @@ int main(int argc, const char * argv[]) {
             int nonce_size = 0;
             
             while (running && recovery_get_ap_nonce(client, &nonce, &nonce_size)< 0) usleep(100);
+            printf("%06u\t",++noncesCreated);
             info("ApNonce=");
             for (int i = 0; i < nonce_size; i++) {
                 info("%02x", nonce[i]);
