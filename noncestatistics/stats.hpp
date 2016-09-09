@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-std::vector<std::pair<std::string, int>> sortNonceList(std::map<std::string, int>& nonceList);
+std::vector<std::pair<std::string, int> > sortNonceList(std::map<std::string, int>& nonceList);
 void cmd_statistics(const char* filename);
 
 
