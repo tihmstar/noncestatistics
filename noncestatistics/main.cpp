@@ -27,12 +27,12 @@ void cmd_help(){
     printf("tool to get a lot of nonces from various iOS devices/versions\n\n");
     
 
-    printf("  -h, --help\t\t\tprints usage information\n");
-    printf("  -e, --ecid ECID\t\tmanually specify ECID of the device. Uses any device if not specified\n");
-    printf("  -t, --times amount\t\tspeficy how many NONCES are collected. If not specified it will collect nonces until you enter ctrl+c\n");
-    printf("  -a, --abort\t\tresets device to normal mode\n");
-    printf("  -s, --statistics\t\tprint statistics from nonce file\n");
-    printf("  FILE\t\tFile to write nonces to (or read from when using '-s' or '--statistics')\n");
+    printf("  -h, --help             prints usage information\n");
+    printf("  -e, --ecid ECID        manually specify ECID of the device. Uses any device if not specified\n");
+    printf("  -t, --times amount     speficy how many NONCES are collected. If not specified it will collect nonces until you enter ctrl+c\n");
+    printf("  -a, --abort            resets device to normal mode\n");
+    printf("  -s, --statistics       print statistics from nonce file\n");
+    printf("  FILE                   File to write nonces to (or read from when using '-s' or '--statistics')\n");
     printf("\n");
 }
 
