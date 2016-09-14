@@ -152,11 +152,6 @@ int main(int argc, const char * argv[]) {
     
     info("Identified device as %s, %s ", client->device->hardware_model, client->device->product_type);
     if (!only_abort) {
-        if (argc!=1) {
-            std::cout << "You must specify a filename as last argument!" << std::endl;
-            cmd_help();
-            return -1;
-        }
         const char *filename = argv[argc-1];
         
         switch (client->mode->index) {
