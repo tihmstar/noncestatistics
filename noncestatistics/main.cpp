@@ -116,6 +116,7 @@ int main(int argc, const char * argv[]) {
                 cmd_help();
                 return -1;
         }
+        argv++,argc--;
     }
     
     client = idevicerestore_client_new();
