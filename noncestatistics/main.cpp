@@ -9,6 +9,7 @@
 #include <signal.h>
 #include <libimobiledevice/libimobiledevice.h>
 #include <libimobiledevice/lockdown.h>
+#include <fstream>
 #include "stats.hpp"
 
 #define USEC_PER_SEC 1000000
@@ -21,6 +22,15 @@ static struct option longopts[] = {
     { "help",               no_argument,       NULL, 'h' },
     { NULL, 0, NULL, 0 }
 };
+
+inline bool exist(const std::string& name)
+{
+    std::ifstream file(name);
+    if(!file)            // If the file was not found, then file is 0, i.e. !file=1 or true.
+        return false;    // The file was not found.
+    else                 // If the file was found, then file is non-0.
+        return true;     // The file was found.
+}
 
 void cmd_help(){
     printf("Usage: noncestatistics [OPTIONS] FILE\n");
@@ -84,7 +94,7 @@ static void cancelNonceCollection(int signo){
 int main(int argc, const char * argv[]) {
     
     bool only_abort = false;
-    
+    bool doStatistics = false;
     char *ecid = 0;
     int times = 0;
     int optindex = 0;
@@ -104,18 +114,22 @@ int main(int argc, const char * argv[]) {
                 only_abort = true;
                 break;
             case 's': // long option: "statistics"; can be called ad short option
-                if (argc < 2) {
-                    std::cout << "You must specify a filename as last argument!" << std::endl;
-                    cmd_help();
-                    return -1;
-                }
-                cmd_statistics(argv[argc-1]);
-                return 0;
+                doStatistics = true;
                 break;
             default:
                 cmd_help();
                 return -1;
         }
+    }
+    if (doStatistics) {
+        if (!exist(std::string(argv[argc-1]))) {
+            std::cout << "You must specify a filename as last argument!" << std::endl;
+            cmd_help();
+            return -1;
+        }
+        cmd_statistics(argv[argc-1]);
+        return 0;
+
     }
     
     client = idevicerestore_client_new();
@@ -134,7 +148,7 @@ int main(int argc, const char * argv[]) {
     
     info("Identified device as %s, %s ", client->device->hardware_model, client->device->product_type);
     if (!only_abort) {
-        if (argc < 2) {
+        if (!exist(std::string(argv[argc-1]))) {
             std::cout << "You must specify a filename as last argument!" << std::endl;
             cmd_help();
             return -1;
@@ -180,7 +194,7 @@ int main(int argc, const char * argv[]) {
         
         
         fp = fopen(filename, "a");
-        fprintf(fp, "ECID: %llx\nIdentified device as %s, %s \n", client->ecid, client->device->hardware_model, client->device->product_type);
+        fprintf(fp, "Identified device as %s, %s \n", client->device->hardware_model, client->device->product_type);
         unsigned int noncesCreated = 0;
         int increment = 1;
         if (times==0) {
