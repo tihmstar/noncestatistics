@@ -15,11 +15,11 @@
 #define USEC_PER_SEC 1000000
 
 static struct option longopts[] = {
-    { "ecid",       no_argument,       NULL, 'e' },
-    { "times",      no_argument,       NULL, 't'},
+    { "ecid",       required_argument,       NULL, 'e' },
+    { "times",      required_argument,       NULL, 't'},
     { "abort",      no_argument,       NULL, 'a'},
-    { "statistics",           no_argument,       NULL, 's'},
-    { "help",               no_argument,       NULL, 'h' },
+    { "statistics", required_argument,       NULL, 's'},
+    { "help",       no_argument,       NULL, 'h' },
     { NULL, 0, NULL, 0 }
 };
 
@@ -41,9 +41,15 @@ void cmd_help(){
     printf("  -e, --ecid ECID        manually specify ECID of the device. Uses any device if not specified\n");
     printf("  -t, --times amount     speficy how many NONCES are collected. If not specified it will collect nonces until you enter ctrl+c\n");
     printf("  -a, --abort            resets device to normal mode\n");
-    printf("  -s, --statistics       print statistics from nonce file\n");
-    printf("  FILE                   File to write nonces to (or read from when using '-s' or '--statistics')\n");
+    printf("  -s, --statistics FILE  print statistics from nonce file\n");
+    printf("  FILE                   File to write nonces to\n");
     printf("\n");
+    printf("Examples:\n\n");
+    printf("Collect 500 ApNonces and write them inside nonces.txt:\n");
+    printf("\tnoncestatistics -t 500 nonces.txt\n\n");
+    printf("Do statistics on the nonces collected in nonces.txt\n");
+    printf("\tnoncestatistics -s nonces.txt\n\n");
+    
 }
 
 int64_t parseECID(const char *ecid){
@@ -92,14 +98,13 @@ static void cancelNonceCollection(int signo){
 }
 
 int main(int argc, const char * argv[]) {
-    
+    char* statFilename = 0;
     bool only_abort = false;
-    bool doStatistics = false;
     char *ecid = 0;
     int times = 0;
     int optindex = 0;
     int opt = 0;
-    while ((opt = getopt_long(argc, (char* const *)argv, "he:t:as", longopts, &optindex)) > 0) {
+    while ((opt = getopt_long(argc, (char* const *)argv, "he:t:as:", longopts, &optindex)) > 0) {
         switch (opt) {
             case 'h': // long option: "help"; can be called as short option
                 cmd_help();
@@ -114,23 +119,21 @@ int main(int argc, const char * argv[]) {
                 only_abort = true;
                 break;
             case 's': // long option: "statistics"; can be called ad short option
-                doStatistics = true;
+                statFilename = optarg;
                 break;
             default:
                 cmd_help();
                 return -1;
         }
-        argv++,argc--;
     }
-    if (doStatistics) {
-        if (!exist(std::string(argv[argc-1]))) {
-            std::cout << "You must specify a filename as last argument!" << std::endl;
+    if (statFilename) {
+        if (!exist(std::string(statFilename))) {
+            std::cout << "You must specify a valid filename as argument next to -s or --statistics!" << std::endl;
             cmd_help();
             return -1;
         }
-        cmd_statistics(argv[argc-1]);
+        cmd_statistics(statFilename);
         return 0;
-
     }
     
     client = idevicerestore_client_new();
@@ -149,7 +152,7 @@ int main(int argc, const char * argv[]) {
     
     info("Identified device as %s, %s ", client->device->hardware_model, client->device->product_type);
     if (!only_abort) {
-        if (!exist(std::string(argv[argc-1]))) {
+        if (argc!=1) {
             std::cout << "You must specify a filename as last argument!" << std::endl;
             cmd_help();
             return -1;
