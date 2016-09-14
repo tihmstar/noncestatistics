@@ -207,6 +207,7 @@ int main(int argc, const char * argv[]) {
             free(nonce);
             
             if (!running) break;
+            if (i%10 == 0) fflush(fp);
             recovery_send_reset(client);
             recovery_client_free(client);
             usleep(USEC_PER_SEC*0.5);
