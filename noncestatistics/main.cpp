@@ -10,6 +10,7 @@
 #include <libimobiledevice/libimobiledevice.h>
 #include <libimobiledevice/lockdown.h>
 #include <fstream>
+#include <unistd.h>
 #include "stats.hpp"
 
 #define USEC_PER_SEC 1000000
