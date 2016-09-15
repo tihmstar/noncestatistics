@@ -2,8 +2,8 @@
 CC=clang
 CXX=clang
 CXXFLAGS=-std=c++11 -Wall -pedantic
-STATICLIBS=/usr/local/lib/libplist.a /usr/local/lib/liblzma.a /usr/local/lib/libimobiledevice.a /usr/local/lib/libusbmuxd.a /usr/local/lib/libirecovery.a /usr/local/Cellar/openssl/1.0.2h_1/lib/libcrypto.a
-LDFLAGS=-liconv -lz -framework IOKit -lc++ -framework CoreFoundation -lssl -lxml2
+STATICLIBS=/usr/local/lib/libplist.a /usr/local/lib/libimobiledevice.a /usr/local/lib/libusbmuxd.a /usr/local/lib/libirecovery.a /usr/local/Cellar/openssl/1.0.2h_1/lib/libcrypto.a
+LDFLAGS=-liconv -lz -framework IOKit -lc++ -framework CoreFoundation -lssl -lxml2 -llzma
 
 
 TARGET=noncestatistics
