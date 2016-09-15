@@ -7,7 +7,7 @@ std::vector<std::pair<std::string, int> > sortNonceList(std::map < std::string, 
     std::vector<std::pair<std::string, int> > sortedList;
     
     for (auto p : nonceList){ sortedList.push_back(p); }
-    std::sort(sortedList.begin(), sortedList.end(), [] (std::pair < std::string, int> &a, std::pair < std::string, int> &b) -> bool{
+    std::sort(sortedList.begin(), sortedList.end(), [] (const std::pair < std::string, int> &a, const std::pair < std::string, int> &b) -> bool{
         return a.second < b.second;
     });
     
