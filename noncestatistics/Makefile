@@ -1,7 +1,7 @@
 # This Makefile is used for STATIC compilation ONLY!
 CC=clang
 CXX=clang
-CXXFLAGS=-g -std=c++11 -Wall -pedantic
+CXXFLAGS=-std=c++11 -Wall -pedantic
 STATICLIBS=/usr/local/lib/libplist.a /usr/local/lib/libxml2.a /usr/local/lib/liblzma.a /usr/local/lib/libimobiledevice.a /usr/local/lib/libusbmuxd.a /usr/local/lib/libirecovery.a /usr/local/Cellar/openssl/1.0.2h_1/lib/libcrypto.a
 LDFLAGS=-liconv -lz -framework IOKit -lc++ -framework CoreFoundation -lssl 
 
@@ -11,7 +11,7 @@ TARGET=noncestatistics
 all: $(TARGET)
 
 noncestatistics: main.o common.o dfu.o idevicerestore.o normal.o recovery.o stats.o
-	$(CXX) $(LDFLAGS) $(STATICLIBS) main.o common.o dfu.o idevicerestore.o normal.o recovery.o stats.o -o $(TARGET)
+	$(CXX) $(LDFLAGS) $(STATICLIBS) $(CXXFLAGS) main.o common.o dfu.o idevicerestore.o normal.o recovery.o stats.o -o $(TARGET)
 
 main.o: main.cpp
 	$(CXX) $(CXXFLAGS) -c main.cpp
