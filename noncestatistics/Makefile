@@ -14,7 +14,7 @@ noncestatistics: main.o common.o dfu.o idevicerestore.o normal.o recovery.o stat
 	$(CXX) $(LDFLAGS) $(STATICLIBS) main.o common.o dfu.o idevicerestore.o normal.o recovery.o stats.o -o $(TARGET)
 
 main.o: main.cpp
-	$(CXX) -c main.cpp
+	$(CXX) $(CXXFLAGS) -c main.cpp
 
 common.o: common.c
 	$(CC) -c common.c
