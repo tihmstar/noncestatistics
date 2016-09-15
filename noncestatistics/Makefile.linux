@@ -1,0 +1,44 @@
+CC=gcc
+CXX=g++
+CXXFLAGS=-std=c++11 -Wall -pedantic
+LDFLAGS=-L/usr/local/ssl/lib
+LDLIBS=-lz -lstdc++  -l:liblzma.a -l:libplist.a -lxml2 -l:libimobiledevice.a -l:libusbmuxd.a -lpthread -l:libirecovery.a -lssl -lcrypto -lusb-1.0
+
+
+TARGET=noncestatistics
+
+all: $(TARGET)
+
+noncestatistics: main.o common.o dfu.o idevicerestore.o normal.o recovery.o stats.o
+	$(CXX) $(CXXFLAGS) main.o common.o dfu.o idevicerestore.o normal.o recovery.o stats.o $(LDFLAGS) $(LDLIBS)   -o $(TARGET)
+
+main.o: main.cpp
+	$(CXX) $(CXXFLAGS) -c main.cpp
+
+common.o: common.c
+	$(CC) -c common.c
+
+dfu.o: dfu.c
+	$(CC) -c dfu.c
+
+idevicerestore.o: idevicerestore.c
+	$(CC) -c idevicerestore.c
+
+normal.o: normal.c
+	$(CC) -c normal.c
+
+recovery.o: recovery.c
+	$(CC) -c recovery.c
+
+stats.o: stats.cpp
+	$(CXX) $(CXXFLAGS) -c stats.cpp
+
+release: noncestatistics.zip
+
+noncestatistics.zip: noncestatistics
+	zip -9 $(TARGET).zip $(TARGET)
+
+clean:
+	rm $(TARGET).zip
+	rm *.o
+	rm $(TARGET)
