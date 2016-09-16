@@ -9,7 +9,7 @@ TARGET=noncestatistics
 
 all: $(TARGET)
 
-noncestatistics: main.o common.o dfu.o idevicerestore.o normal.o recovery.o stats.o
+$(TARGET): main.o common.o dfu.o idevicerestore.o normal.o recovery.o stats.o
 	$(CXX) $(CXXFLAGS) main.o common.o dfu.o idevicerestore.o normal.o recovery.o stats.o $(LDFLAGS) $(LDLIBS)   -o $(TARGET)
 
 main.o: main.cpp
@@ -33,12 +33,12 @@ recovery.o: recovery.c
 stats.o: stats.cpp
 	$(CXX) $(CXXFLAGS) -c stats.cpp
 
-release: noncestatistics.zip
+release: $(TARGET).zip
 
-noncestatistics.zip: noncestatistics
+$(TARGET).zip: $(TARGET)
 	zip -9 $(TARGET).zip $(TARGET)
 
 clean:
-	rm $(TARGET).zip
-	rm *.o
-	rm $(TARGET)
+	rm -f *.o
+	rm -f $(TARGET)
+	rm -f $(TARGET).zip
