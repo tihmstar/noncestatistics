@@ -2,7 +2,7 @@ CC=gcc
 CXX=g++
 CXXFLAGS=-std=c++11 -Wall -pedantic
 LDFLAGS=-L/usr/local/ssl/lib
-LDLIBS=-lz -lstdc++  -l:liblzma.a -l:libplist.a -lxml2 -l:libimobiledevice.a -l:libusbmuxd.a -lpthread -l:libirecovery.a -lssl -lcrypto -lusb-1.0
+LDLIBS=-lstdc++  -l:libplist.a -l:libxml2.a -l:liblzma.a -l:libimobiledevice.a -l:libusbmuxd.a -lpthread -l:libirecovery.a -lssl -lcrypto -lusb-1.0 -lc -lz
 
 
 TARGET=noncestatistics
