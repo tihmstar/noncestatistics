@@ -1,0 +1,3 @@
+#!/bin/bash
+sed -i '.bak' "s/.*VERSION_COMMIT_COUNT_NONCESTATISTICS.*/#define VERSION_COMMIT_COUNT_NONCESTATISTICS \"$(git rev-list --count HEAD)\"/" ./noncestatistics/all_noncestatistics.h 2>/dev/null || sed -i "s/.*VERSION_COMMIT_COUNT_NONCESTATISTICS.*/#define VERSION_COMMIT_COUNT_NONCESTATISTICS \"$(git rev-list --count HEAD)\"/" ./noncestatistics/all_noncestatistics.h 2>/dev/null
+sed -i '.bak' "s/.*VERSION_COMMIT_SHA_NONCESTATISTICS.*/#define VERSION_COMMIT_SHA_NONCESTATISTICS \"$(git rev-parse HEAD)\"/" ./noncestatistics/all_noncestatistics.h 2>/dev/null || sed -i "s/.*VERSION_COMMIT_SHA_NONCESTATISTICS.*/#define VERSION_COMMIT_SHA_NONCESTATISTICS \"$(git rev-parse HEAD)\"/" ./noncestatistics/all_noncestatistics.h 2>/dev/null

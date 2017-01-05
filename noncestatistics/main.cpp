@@ -10,6 +10,7 @@
 #include <libimobiledevice/libimobiledevice.h>
 #include <libimobiledevice/lockdown.h>
 #include "stats.hpp"
+#include "all_noncestatistics.h"
 
 #define USEC_PER_SEC 1000000
 
@@ -82,7 +83,8 @@ static void cancelNonceCollection(int signo){
 }
 
 int main(int argc, const char * argv[]) {
-    
+    printf("Version: " VERSION_COMMIT_SHA_NONCESTATISTICS" - " VERSION_COMMIT_COUNT_NONCESTATISTICS"\n");
+
     bool only_abort = false;
     
     char *ecid = 0;
