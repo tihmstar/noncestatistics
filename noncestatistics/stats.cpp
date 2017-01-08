@@ -1,20 +1,13 @@
 #include "stats.hpp"
-
-
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdio.h>
-#include <algorithm>
 #include <iostream>
 #include <regex>
 #include <fstream>
 
-std::vector<std::pair<std::string, int> > sortNonceList(std::map<std::string, int>& nonceList){
+std::vector<std::pair<std::string, int> > sortNonceList(std::map < std::string, int>& nonceList){
     std::vector<std::pair<std::string, int> > sortedList;
     
     for (auto p : nonceList){ sortedList.push_back(p); }
-    std::sort(sortedList.begin(), sortedList.end(), [](std::pair<std::string, int> &a, std::pair<std::string, int> &b){
+    std::sort(sortedList.begin(), sortedList.end(), [] (const std::pair < std::string, int> &a, const std::pair < std::string, int> &b) -> bool{
         return a.second < b.second;
     });
     

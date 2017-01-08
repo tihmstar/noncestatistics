@@ -224,7 +224,7 @@ int get_ap_nonce(struct idevicerestore_client_t* client, unsigned char** nonce, 
 		return -1;
 	}
 
-	int i = 0;
+//	int i = 0;
 //    info("ApNonce=");
 //	for (i = 0; i < *nonce_size; i++) {
 //		info("%02x", (*nonce)[i]);

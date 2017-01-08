@@ -10,32 +10,49 @@
 #include <signal.h>
 #include <libimobiledevice/libimobiledevice.h>
 #include <libimobiledevice/lockdown.h>
+#include <fstream>
+#include <unistd.h>
 #include "stats.hpp"
 #include "all_noncestatistics.h"
 
 #define USEC_PER_SEC 1000000
 
 static struct option longopts[] = {
-    { "ecid",       no_argument,       NULL, 'e' },
-    { "times",      no_argument,       NULL, 't'},
+    { "ecid",       required_argument,       NULL, 'e' },
+    { "times",      required_argument,       NULL, 't'},
     { "abort",      no_argument,       NULL, 'a'},
-    { "statistics",           no_argument,       NULL, 's'},
-    { "help",               no_argument,       NULL, 'h' },
+    { "statistics", required_argument,       NULL, 's'},
+    { "help",       no_argument,       NULL, 'h' },
     { NULL, 0, NULL, 0 }
 };
 
+inline bool exist(const std::string& name)
+{
+    std::ifstream file(name);
+    if(!file)            // If the file was not found, then file is 0, i.e. !file=1 or true.
+        return false;    // The file was not found.
+    else                 // If the file was found, then file is non-0.
+        return true;     // The file was found.
+}
+
 void cmd_help(){
-    printf("Usage: noncestatistics [OPTIONS]\n");
+    printf("Usage: noncestatistics [OPTIONS] FILE\n");
     printf("tool to get a lot of nonces from various iOS devices/versions\n\n");
     
 
-    printf("  -h, --help\t\t\tprints usage information\n");
-    printf("  -e, --ecid ECID\t\tmanually specify ECID of the device. Uses any device if not specified\n");
-    printf("  -t, --times amount\t\tspeficy how many NONCES are collected. If not specified it will collect nonces until you enter ctrl+c\n");
-    printf("  -a, --abort\t\tresets device to normal mode\n");
-    printf("  -s, --statistics\t\tprint statistics from nonce file\n");
-    printf("  FILE\t\tFile to write nonces to (or read from when using '-s' or '--statistics')\n");
+    printf("  -h, --help             prints usage information\n");
+    printf("  -e, --ecid ECID        manually specify ECID of the device. Uses any device if not specified\n");
+    printf("  -t, --times amount     speficy how many NONCES are collected. If not specified it will collect nonces until you enter ctrl+c\n");
+    printf("  -a, --abort            resets device to normal mode\n");
+    printf("  -s, --statistics FILE  print statistics from nonce file\n");
+    printf("  FILE                   File to write nonces to\n");
     printf("\n");
+    printf("Examples:\n\n");
+    printf("Collect 500 ApNonces and write them inside nonces.txt:\n");
+    printf("\tnoncestatistics -t 500 nonces.txt\n\n");
+    printf("Do statistics on the nonces collected in nonces.txt\n");
+    printf("\tnoncestatistics -s nonces.txt\n\n");
+    
 }
 
 int64_t parseECID(const char *ecid){
@@ -86,13 +103,13 @@ static void cancelNonceCollection(int signo){
 int main(int argc, const char * argv[]) {
     printf("Version: " VERSION_COMMIT_SHA_NONCESTATISTICS" - " VERSION_COMMIT_COUNT_NONCESTATISTICS"\n");
 
+    char* statFilename = 0;
     bool only_abort = false;
-    
     char *ecid = 0;
     int times = 0;
     int optindex = 0;
     int opt = 0;
-    while ((opt = getopt_long(argc, (char* const *)argv, "he:t:as", longopts, &optindex)) > 0) {
+    while ((opt = getopt_long(argc, (char* const *)argv, "he:t:as:", longopts, &optindex)) > 0) {
         switch (opt) {
             case 'h': // long option: "help"; can be called as short option
                 cmd_help();
@@ -107,19 +124,21 @@ int main(int argc, const char * argv[]) {
                 only_abort = true;
                 break;
             case 's': // long option: "statistics"; can be called ad short option
-                if (argc < 2) {
-                    std::cout << "You must specify a filename as last argument!" << std::endl;
-                    cmd_help();
-                    return -1;
-                }
-                cmd_statistics(argv[argc-1]);
-                return 0;
+                statFilename = optarg;
                 break;
             default:
                 cmd_help();
                 return -1;
         }
-        argv++,argc--;
+    }
+    if (statFilename) {
+        if (!exist(std::string(statFilename))) {
+            std::cout << "You must specify a valid filename as argument next to -s or --statistics!" << std::endl;
+            cmd_help();
+            return -1;
+        }
+        cmd_statistics(statFilename);
+        return 0;
     }
     
     client = idevicerestore_client_new();
@@ -138,11 +157,6 @@ int main(int argc, const char * argv[]) {
     
     info("Identified device as %s, %s ", client->device->hardware_model, client->device->product_type);
     if (!only_abort) {
-        if (argc < 2) {
-            std::cout << "You must specify a filename as last argument!" << std::endl;
-            cmd_help();
-            return -1;
-        }
         const char *filename = argv[argc-1];
         
         switch (client->mode->index) {
@@ -184,7 +198,7 @@ int main(int argc, const char * argv[]) {
         
         
         fp = fopen(filename, "a");
-        fprintf(fp, "ECID: %llx\nIdentified device as %s, %s \n", client->ecid, client->device->hardware_model, client->device->product_type);
+        fprintf(fp, "Identified device as %s, %s \n", client->device->hardware_model, client->device->product_type);
         unsigned int noncesCreated = 0;
         int increment = 1;
         if (times==0) {
