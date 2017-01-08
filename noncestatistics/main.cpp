@@ -1,6 +1,7 @@
 
 
 #include <iostream>
+#include <unistd.h>
 #include <getopt.h>
 #include "idevicerestore.h"
 #include "recovery.h"
