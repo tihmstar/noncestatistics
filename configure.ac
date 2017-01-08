@@ -12,6 +12,15 @@ CXXFLAGS+=" -std=c++11"
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
+AC_CANONICAL_HOST
+# Check for operating system
+AC_MSG_CHECKING([whether we need platform-specific build settings])
+case $host_os in
+  darwin* )
+        CXXFLAGS+=" -stdlib=libc++"
+        ;;
+esac
+
 # Checks for libraries.
 
 PKG_CHECK_MODULES(libplist, libplist >= 1.0)
