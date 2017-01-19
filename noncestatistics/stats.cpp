@@ -46,7 +46,7 @@ void cmd_statistics(const char* filename){
     std::cout << "===========================================================================" << std::endl;
     std::cout << "nonce                                     abs. frequency    rel. frequency" << std::endl<<std::endl;
     
-    if (collisions == 0) std::cout <<  "There where no collisions found!"<<std::endl<<std::endl;
+    if (collisions == 0) std::cout <<  "There were no collisions found!"<<std::endl<<std::endl;
     
     std::cout << "There is a total of "<< amount << " nonces" << std::endl;
 }
